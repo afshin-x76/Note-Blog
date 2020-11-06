@@ -1,7 +1,12 @@
 from django.shortcuts import render
+from .models import Post
 
 def index(request):
-    return render(request, "index.html")
+    queryset = Post.objects.all()[:3]
+    context = {
+        'posts': queryset
+    }
+    return render(request, "index.html", context)
 
 def blog(request):
     return render(request, "blog.html")
