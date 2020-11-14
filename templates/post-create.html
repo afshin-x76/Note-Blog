@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+span.asteriskField {
+    display:none;
+}
+</style>
+<div class="col-4 offset-4 mb-5 mt-5">
+{% crispy form form.helper %}
+</div>
+{% endblock content %}

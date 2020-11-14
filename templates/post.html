@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static  %}
+{%load crispy_forms_tags%}
 {% block content %}
 
     <div class="container">
@@ -28,87 +29,41 @@
                   </div>
                 </div>
                 <div class="post-body">
-                  <p class="lead">{{post.overview}}</p>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                  <p> <img src="{% static 'img/featured-pic-3.jpeg' %}" alt="..." class="img-fluid"></p>
-                  <h3>Lorem Ipsum Dolor</h3>
-                  <p>div Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda temporibus iusto voluptates deleniti similique rerum ducimus sint ex odio saepe. Sapiente quae pariatur ratione quis perspiciatis deleniti accusantium</p>
-                  <blockquote class="blockquote">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-                    <footer class="blockquote-footer">Someone famous in
-                      <cite title="Source Title">Source Title</cite>
-                    </footer>
-                  </blockquote>
-                  <p>quasi nam. Libero dicta eum recusandae, commodi, ad, autem at ea iusto numquam veritatis, officiis. Accusantium optio minus, voluptatem? Quia reprehenderit, veniam quibusdam provident, fugit iusto ullam voluptas neque soluta adipisci ad.</p>
+                  {{post.content|safe}}
                 </div>
-                <div class="post-tags"><a href="#" class="tag">#Business</a><a href="#" class="tag">#Tricks</a><a href="#" class="tag">#Financial</a><a href="#" class="tag">#Economy</a></div>
-                <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row"><a href="#" class="prev-post text-left d-flex align-items-center">
+                <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+                <a href="{{previous_post.get_absolute_url}}" class="prev-post text-left d-flex align-items-center">
                     <div class="icon prev"><i class="fa fa-angle-left"></i></div>
                     <div class="text"><strong class="text-primary">Previous Post </strong>
-                      <h6>I Bought a Wedding Dress.</h6>
-                    </div></a><a href="#" class="next-post text-right d-flex align-items-center justify-content-end">
+                      <h6>{{previous_post}}</h6>
+                    </div></a><a href="{{next_post.get_absolute_url}}" class="next-post text-right d-flex align-items-center justify-content-end">
                     <div class="text"><strong class="text-primary">Next Post </strong>
-                      <h6>I Bought a Wedding Dress.</h6>
+                      <h6>{{next_post}}</h6>
                     </div>
                     <div class="icon next"><i class="fa fa-angle-right">   </i></div></a></div>
                 <div class="post-comments">
                   <header>
-                    <h3 class="h6">Post Comments<span class="no-of-comments">(3)</span></h3>
+                    <h3 class="h6">Post Comments<span class="no-of-comments">({{post.comment_count}})</span></h3>
                   </header>
+                  {% for comment in post.comments.all %}
                   <div class="comment">
                     <div class="comment-header d-flex justify-content-between">
                       <div class="user d-flex align-items-center">
                         <div class="image"><img src="{% static 'img/user.svg' %}" alt="..." class="img-fluid rounded-circle"></div>
-                        <div class="title"><strong>Jabi Hernandiz</strong><span class="date">May 2016</span></div>
+                        <div class="title"><strong>{{comment.author}}</strong><span class="date">{{comment.write_in}}</span></div>
                       </div>
                     </div>
                     <div class="comment-body">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                      <p>{{comment.comment}}</p>
                     </div>
                   </div>
-                  <div class="comment">
-                    <div class="comment-header d-flex justify-content-between">
-                      <div class="user d-flex align-items-center">
-                        <div class="image"><img src="{% static 'img/user.svg' %}" alt="..." class="img-fluid rounded-circle"></div>
-                        <div class="title"><strong>Nikolas</strong><span class="date">May 2016</span></div>
-                      </div>
-                    </div>
-                    <div class="comment-body">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                    </div>
-                  </div>
-                  <div class="comment">
-                    <div class="comment-header d-flex justify-content-between">
-                      <div class="user d-flex align-items-center">
-                        <div class="image"><img src="{% static 'img/user.svg' %}" alt="..." class="img-fluid rounded-circle"></div>
-                        <div class="title"><strong>John Doe</strong><span class="date">May 2016</span></div>
-                      </div>
-                    </div>
-                    <div class="comment-body">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                    </div>
-                  </div>
+                  {% endfor %}
                 </div>
-                <div class="add-comment">
+                <div class="add-comment col-4 offset">
                   <header>
                     <h3 class="h6">Leave a reply</h3>
                   </header>
-                  <form action="#" class="commenting-form">
-                    <div class="row">
-                      <div class="form-group col-md-6">
-                        <input type="text" name="username" id="username" placeholder="Name" class="form-control">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <input type="email" name="username" id="useremail" placeholder="Email Address (will not be published)" class="form-control">
-                      </div>
-                      <div class="form-group col-md-12">
-                        <textarea name="usercomment" id="usercomment" placeholder="Type your comment" class="form-control"></textarea>
-                      </div>
-                      <div class="form-group col-md-12">
-                        <button type="submit" class="btn btn-secondary">Submit Comment</button>
-                      </div>
-                    </div>
-                  </form>
+                  {% crispy form form.helper %}
                 </div>
               </div>
             </div>
